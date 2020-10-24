@@ -1,4 +1,7 @@
-PUSH = require 'push'
+Class = require 'Class'
+Push = require 'Push'
+
+require 'Animation'
 
 -- close resolution to NES but 16:9
 VIRTUAL_WIDTH = 432
@@ -15,7 +18,7 @@ love.graphics.setDefaultFilter('nearest', 'nearest')
 function love.load()
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {vsync=false})
   love.window.setTitle('Starman 50')
-  PUSH:setupScreen(
+  Push:setupScreen(
       VIRTUAL_WIDTH, VIRTUAL_HEIGHT,
       WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
@@ -38,7 +41,7 @@ end
 -- ///////////////////////////////
 function love.draw()
   -- begin virtual resolution drawing
-  PUSH:apply('start')
+  Push:apply('start')
 
   -- clear screen using Mario background blue
   love.graphics.clear(0, 0, 0, 1)
@@ -52,10 +55,13 @@ function love.draw()
   love.graphics.print("Starman 2050", 1, 1)
 
   -- end virtual resolution
-  PUSH:apply('end')
+  Push:apply('end')
 end
 
+-- ///////////////////////////////
+-- ///////////////////////////////
+
 function love.resize(w, h)
-  PUSH:resize(w, h)
+  Push:resize(w, h)
 end
 

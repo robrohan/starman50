@@ -6,8 +6,8 @@ function love.conf(t)
   -- No window, we'll do this in main
   t.window = false
 
-  -- Box2D
-  t.modules.physics = true
+  -- Box2D... might use this
+  t.modules.physics = false
 
   t.modules.joystick = false
   end
