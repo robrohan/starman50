@@ -40,11 +40,24 @@ function love.load()
   SHADER = love.graphics.newShader("rainbow.glsl")
 end
 
-time = 0
+TIME = 0
 -- ///////////////////////////////
 function love.update(dt)
+
   GAME:update(dt)
-  time = time + dt
+
+  -------------------------------
+  if SHAKE == true then
+    -- create a coroutine
+    shk = Camera:shake(1000, 5)
+  end
+  if shk then
+    -- if it exists "play" it
+    coroutine.resume(shk)
+  end
+  -------------------------------
+
+  TIME = TIME + dt
 end
 
 -- ///////////////////////////////
@@ -53,21 +66,22 @@ function love.draw()
   Push:apply('start')
   Camera:set()
 
-  -- coroutine.resume(Camera:shake(1, 2))
-
   love.graphics.clear(0.098, 0.129, 0.251, 1)
   love.graphics.setFont(FONTS['mediumFont'])
   love.graphics.print("Starman 2050", 1, 1)
 
   GAME:render()
 
-  SHADER:send("iTime", time)
-  --SHADER:send("iResolution", {18, 32})
+  --------------------------------
+  -- Most shaders will need a time element
+  SHADER:send("iTime", TIME)
   love.graphics.setShader(SHADER)
+  -- We need to draw to a proper graph or the texture_coords
+  -- don't really work. I.e. using a fill rectangle
                           -- x, y, r, sX, sY,  oX        oY
   love.graphics.draw(LASER, 100, 100, 0, 1, 1, 18 / 2, 32 / 2)
-  -- love.graphics.rectangle("fill", VIRTUAL_WIDTH-100, 0, 100, 100)
   love.graphics.setShader()
+  --------------------------------
 
   -- end virtual resolution
   Camera:unset()
@@ -81,12 +95,20 @@ function love.keypressed(key)
     love.event.quit()
   end
 
+  if key == 'space' then
+    SHAKE = true
+  end
+
   GAME:keypressed(key)
 end
 
 -- ///////////////////////////////
 function love.keyreleased(key)
   GAME:keyreleased(key)
+
+  if key == 'space' then
+    SHAKE = false
+  end
 end
 
 -- ///////////////////////////////

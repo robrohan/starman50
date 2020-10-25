@@ -47,23 +47,19 @@ function Camera:shake(duration, magnitude)
     local origx = Camera.x
     local origy = Camera.y
 
-    -- local duration = 1000
-    -- local magnitude = 10
-
-    local t = 0
-    while t < duration do
+    local shaketime = 0
+    while shaketime < duration do
       local nx = math.random() * magnitude
       local ny = math.random() * magnitude
 
       Camera.x = nx
       Camera.y = ny
-      -- print(t)
-      t = t + 1
 
+      shaketime = shaketime + 1
       coroutine.yield()
     end
 
-    Camera.x = origx
-    Camera.y = origy
+    Camera.x = 0 -- origx
+    Camera.y = 0 -- origy
   end)
 end
