@@ -2,7 +2,7 @@ Class = require 'Class'
 Push = require 'Push'
 
 require 'Animation'
-require 'Roadster'
+require 'Game'
 
 -- close resolution to NES but 16:9
 -- snes
@@ -33,57 +33,40 @@ function love.load()
     ['mediumFont'] = love.graphics.newFont('assets/fonts/font.ttf', 16),
     ['largeFont'] = love.graphics.newFont('assets/fonts/font.ttf', 32)
   }
-  -- love.keyboard.keysPressed = {}
-  -- love.keyboard.keysReleased = {}
-
-  ----
-  PLAYER = Roadster()
+  GAME = Game()
 end
 
 -- ///////////////////////////////
 function love.update(dt)
-  PLAYER:update(dt)
+  GAME:update(dt)
 end
 
 -- ///////////////////////////////
 function love.draw()
   -- begin virtual resolution drawing
   Push:apply('start')
-
-  -- clear screen using Mario background blue
   love.graphics.clear(0.098, 0.129, 0.251, 1)
-
-  -- renders our map object onto the screen
-  -- love.graphics.translate(math.floor(-map.camX + 0.5), math.floor(-map.camY + 0.5))
-  -- map:render()
-
-  -- love.graphics.setColor(math.random(), math.random(), math.random(), 1)
   love.graphics.setFont(FONTS['mediumFont'])
   love.graphics.print("Starman 2050", 1, 1)
-
-  ----
-  PLAYER:render()
-
+  GAME:render()
   -- end virtual resolution
   Push:apply('end')
 end
 
 -- ///////////////////////////////
 function love.keypressed(key)
-  print(key)
-  if key == 'left' then
-    PLAYER.state = 'bank_left'
-  elseif key == 'right' then
-    PLAYER.state = 'bank_right'
+  -- TODO remove this
+  if key == 'escape' then
+    love.event.quit()
   end
+
+  GAME:keypressed(key)
 end
 
 -- ///////////////////////////////
 function love.keyreleased(key)
-  print(key)
-  PLAYER.state = 'idle'
+  GAME:keyreleased(key)
 end
-
 
 -- ///////////////////////////////
 -- ///////////////////////////////
