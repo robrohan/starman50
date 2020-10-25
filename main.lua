@@ -2,10 +2,12 @@ Class = require 'Class'
 Push = require 'Push'
 
 require 'Animation'
+require 'Roadster'
 
 -- close resolution to NES but 16:9
-VIRTUAL_WIDTH = 432
-VIRTUAL_HEIGHT = 243
+-- snes
+VIRTUAL_WIDTH = 256 -- 320 -- 432
+VIRTUAL_HEIGHT = 224 -- 240 -- 243
 
 -- actual window resolution
 WINDOW_WIDTH = 1280
@@ -33,10 +35,14 @@ function love.load()
   }
   -- love.keyboard.keysPressed = {}
   -- love.keyboard.keysReleased = {}
+
+  ----
+  PLAYER = Roadster()
 end
 
 -- ///////////////////////////////
 function love.update(dt)
+  PLAYER:update(dt)
 end
 
 -- ///////////////////////////////
@@ -55,13 +61,32 @@ function love.draw()
   love.graphics.setFont(FONTS['mediumFont'])
   love.graphics.print("Starman 2050", 1, 1)
 
+  ----
+  PLAYER:render()
+
   -- end virtual resolution
   Push:apply('end')
 end
 
 -- ///////////////////////////////
--- ///////////////////////////////
+function love.keypressed(key)
+  print(key)
+  if key == 'left' then
+    PLAYER.state = 'bank_left'
+  elseif key == 'right' then
+    PLAYER.state = 'bank_right'
+  end
+end
 
+-- ///////////////////////////////
+function love.keyreleased(key)
+  print(key)
+  PLAYER.state = 'idle'
+end
+
+
+-- ///////////////////////////////
+-- ///////////////////////////////
 function love.resize(w, h)
   Push:resize(w, h)
 end
