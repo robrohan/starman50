@@ -16,6 +16,7 @@ love.graphics.setDefaultFilter('nearest', 'nearest')
 
 -- ///////////////////////////////
 function love.load()
+  print("Starman")
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {vsync=false})
   love.window.setTitle('Starman 50')
   Push:setupScreen(
@@ -44,7 +45,7 @@ function love.draw()
   Push:apply('start')
 
   -- clear screen using Mario background blue
-  love.graphics.clear(0, 0, 0, 1)
+  love.graphics.clear(0.098, 0.129, 0.251, 1)
 
   -- renders our map object onto the screen
   -- love.graphics.translate(math.floor(-map.camX + 0.5), math.floor(-map.camY + 0.5))
