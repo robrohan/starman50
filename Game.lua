@@ -16,6 +16,9 @@ function Game:init()
   -- love.keyboard.keysPressed = {}
   -- love.keyboard.keysReleased = {}
 
+  self.texture = love.graphics.newImage('assets/graphics/background.png')
+  self.shader = love.graphics.newShader("background.glsl")
+
   SWARM = {}
   for i = 1, MAX_ENEMY do
     SWARM[i] = Enemy()
@@ -133,7 +136,12 @@ function Game:update(dt)
 end
 
 function Game:render()
-  love.graphics.clear(0.098, 0.129, 0.251, 1)
+  -- love.graphics.clear(0.098, 0.129, 0.251, 1)
+
+  self.shader:send("iTime", TIME)
+  love.graphics.setShader(self.shader)
+  love.graphics.draw(self.texture, 0, 0, 0, 1, 1)
+  love.graphics.setShader()
 
   if self.state == 'in_play' then
     PLAYER:render()
