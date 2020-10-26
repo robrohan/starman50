@@ -10,6 +10,7 @@ SCORE = 0
 AI_SCORE = 0
 LOSE_SCORE = 9
 ATTACK_LEVEL = 5
+ATTACK_SPEED = 10
 BEST = 0
 
 function Game:init()
@@ -24,7 +25,7 @@ function Game:init()
     SWARM[i] = Enemy()
   end
 
-  self.state = 'in_play'
+  self.state = 'splash'
   self.states = {
     ['splash'] = function(dt)
       -- TODO
@@ -65,7 +66,7 @@ function Game:init()
         end
 
         if e.state == 'alive' then
-          e.dy = math.min(0.1, math.random() / 10)
+          e.dy = math.min(0.1, math.random() * ATTACK_SPEED)
           e.state = 'attack'
         end
 
@@ -88,14 +89,19 @@ function Game:init()
         ATTACK_LEVEL = 10
       elseif SCORE == 40 then
         ATTACK_LEVEL = 15
+        ATTACK_SPEED = 50
       elseif SCORE == 60 then
         ATTACK_LEVEL = 20
+        ATTACK_SPEED = 80
       elseif SCORE == 80 then
         ATTACK_LEVEL = 30
+        ATTACK_SPEED = 100
       elseif SCORE == 100 then
         ATTACK_LEVEL = 40
+        ATTACK_SPEED = 120
       elseif SCORE == 200 then
         ATTACK_LEVEL = 60
+        ATTACK_SPEED = 200
       end
     end,
     ['dead'] = function(dt)

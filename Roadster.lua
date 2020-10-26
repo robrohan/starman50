@@ -12,7 +12,7 @@ function Roadster:init()
 
   self.scale = 1
 
-  self.texture = love.graphics.newImage('assets/graphics/roadster_animation_test.png')
+  self.texture = love.graphics.newImage('assets/graphics/roadster.png')
 
   -- used to determine behavior and animations
   self.state = 'idle'

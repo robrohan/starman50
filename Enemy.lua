@@ -1,9 +1,9 @@
 Enemy = Class{}
 
 function Enemy:init()
-  self.x = math.max(18, VIRTUAL_WIDTH * math.random() - (18 * 0.5))
+  self.x = math.max(18, VIRTUAL_WIDTH * math.random() - (32 * 0.5))
   self.y = -32
-  self.w = 18
+  self.w = 32
   self.h = 32
 
   self.dx = 0
@@ -11,9 +11,9 @@ function Enemy:init()
 
   self.scale = 1
 
-  self.r = 3.14
+  self.r = 0
 
-  self.texture = love.graphics.newImage('assets/graphics/roadster_animation_test.png')
+  self.texture = love.graphics.newImage('assets/graphics/bad_ai.png')
 
   -- used to determine behavior and animations
   self.state = 'alive'
@@ -24,7 +24,7 @@ function Enemy:init()
     ['alive'] = Animation({
       texture = self.texture,
       frames = {
-        love.graphics.newQuad(0, 0, 18, 32, self.texture:getDimensions())
+        love.graphics.newQuad(math.random(0,2)*32, 0, 32, 32, self.texture:getDimensions())
       }
     }),
   }
@@ -64,7 +64,7 @@ function Enemy:resetPosition()
   self.scale = 1
   self.x = math.max(self.w, VIRTUAL_WIDTH * math.random() - (self.w * 0.5))
   self.y = -self.h
-  self.r = 3.14
+  self.r = 0
   self.state = 'alive'
 end
 
