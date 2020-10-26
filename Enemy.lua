@@ -45,7 +45,7 @@ function Enemy:init()
     ['die'] = function(dt)
       self.scale = self.scale - 0.001
       self.y = self.y + (self.dy * 2)
-      self.r = (self.r - math.random() / 100) -- 0.01)
+      self.r = self.r - (math.random() / 100)
       if self.scale <= 0 then
         self.state = 'dead'
       end

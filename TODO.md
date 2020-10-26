@@ -1,5 +1,5 @@
 [ ] Splash screen (? xtra)
-[ ] Music - life on mars
+[ ] Music - life on mars?
   [ ] full song in beep boop?
   [ ] looping milkytracker homage
 [x] Game manager
@@ -18,10 +18,10 @@
   [ ] ~Fire~
   [x] Explode
 [ ] ~Enemy ships animation~
-  [ ] Idle
-  [ ] Explode
+  [x] Idle
+  [ ] ~Explode~
 [x] Laser animation / control
-[ ] Background stars scrolling down infinite
+[x] Background stars scrolling down infinite
 [ ] Random planets and what not scrolling past
 * ~Final Boss (? xtra)~
   * Mars at the top of the screen

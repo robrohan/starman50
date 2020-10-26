@@ -20,6 +20,19 @@ function Game:init()
   self.texture = love.graphics.newImage('assets/graphics/background.png')
   self.shader = love.graphics.newShader("background.glsl")
 
+  self.music = {
+    ['splash'] = love.audio.newSource('assets/music/life_on_mars.wav', 'static'),
+    ['game'] = love.audio.newSource('assets/music/starman.wav', 'static')
+  }
+
+  self.sounds = {
+    ['laser1'] = love.audio.newSource('assets/sounds/laser1.wav', 'static'),
+    ['laser2'] = love.audio.newSource('assets/sounds/laser2.wav', 'static'),
+    ['lose'] = love.audio.newSource('assets/sounds/lose.wav', 'static'),
+    ['explode1'] = love.audio.newSource('assets/sounds/explode1.wav', 'static'),
+    ['explode2'] = love.audio.newSource('assets/sounds/explode2.wav', 'static'),
+  }
+
   SWARM = {}
   for i = 1, MAX_ENEMY do
     SWARM[i] = Enemy()
@@ -29,8 +42,11 @@ function Game:init()
   self.states = {
     ['splash'] = function(dt)
       -- TODO
+      self.music['splash']:setLooping(false)
+      self.music['splash']:play()
     end,
     ['set_stage'] = function(dt)
+      self.music['splash']:stop()
       PLAYER:reset()
       for i = 1, MAX_ENEMY do
         SWARM[i]:resetPosition()
@@ -39,9 +55,11 @@ function Game:init()
       AI_SCORE = 0
       ATTACK_LEVEL = 5
       self.state = 'in_play'
+      self.music['game']:setLooping(true)
+      self.music['game']:play()
     end,
     ['in_play'] = function(dt)
-      self.handleInput()
+      self:handleInput()
 
       -- Enemy logic...
       for i = 1, ATTACK_LEVEL do
@@ -52,6 +70,14 @@ function Game:init()
           -- see if the laser hit a bad guy
           if collides(LASER, e) then
             e.state = 'die'
+            local v = math.random(1,2)
+            self.sounds['explode'..v]:stop()
+            self.sounds['explode'..v]:setFilter {
+              type = 'lowpass',
+              volume = 0.4,
+              highgain = 1.
+            }
+            self.sounds['explode'..v]:play()
             e.y = e.y - 10
             SCORE = SCORE + 1
             -- tmp
@@ -61,6 +87,8 @@ function Game:init()
           if collides(PLAYER, e) then
             PLAYER.state = 'hit'
             e.state = 'die'
+            self.sounds['lose']:stop()
+            self.sounds['lose']:play()
             shk = Camera:shake(150, 10)
           end
         end
@@ -83,6 +111,7 @@ function Game:init()
 
       if AI_SCORE >= LOSE_SCORE then
         self.state = 'dead'
+        self.music['game']:stop()
       end
 
       if SCORE == 20 then
@@ -134,6 +163,14 @@ function Game:handleInput()
     LASER.x = PLAYER.x
     LASER.y = PLAYER.y - 26
     LASER.state = 'fire'
+    local v = math.random(1,2)
+    self.sounds['laser'..v]:stop()
+    self.sounds['laser'..v]:setFilter {
+      type = 'lowpass',
+      volume = 0.4,
+      highgain = 1.
+    }
+    self.sounds['laser'..v]:play()
   end
 end
 
