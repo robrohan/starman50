@@ -13,6 +13,8 @@ ATTACK_LEVEL = 5
 ATTACK_SPEED = 10
 BEST = 0
 
+DEAD_TIME = 0
+
 function Game:init()
   -- love.keyboard.keysPressed = {}
   -- love.keyboard.keysReleased = {}
@@ -68,6 +70,7 @@ function Game:init()
       self.state = 'in_play'
       self.music['game']:setLooping(true)
       self.music['game']:play()
+      TIME = 0
     end,
     ['in_play'] = function(dt)
       self:handleInput()
@@ -125,6 +128,7 @@ function Game:init()
         self.music['game']:stop()
         local v = math.random(1,11)
         self.sounds['musk'..v]:play()
+        DEAD_TIME = 0
       end
 
       if SCORE == 20 then
@@ -147,7 +151,11 @@ function Game:init()
       end
     end,
     ['dead'] = function(dt)
+      DEAD_TIME = DEAD_TIME + dt
       PLAYER:update(dt)
+      if DEAD_TIME >= 20 then
+        self.state = 'splash'
+      end
     end,
     ['quit'] = function(dt)
     end
