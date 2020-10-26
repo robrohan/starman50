@@ -44,8 +44,8 @@ end
 
 function Camera:shake(duration, magnitude)
   return coroutine.create(function()
-    local origx = Camera.x
-    local origy = Camera.y
+    -- local origx = Camera.x
+    -- local origy = Camera.y
 
     local shaketime = 0
     while shaketime < duration do

@@ -3,8 +3,9 @@ Roadster = Class{}
 function Roadster:init()
   self.x = 100
   self.y = VIRTUAL_HEIGHT - 32
-  self.width = 18
-  self.height = 32
+  self.w = 18
+  self.h = 32
+  self.r = 0
 
   self.texture = love.graphics.newImage('assets/graphics/roadster_animation_test.png')
 
@@ -62,21 +63,14 @@ end
 
 
 function Roadster:render()
-  local scaleX = 1
-  local r = 0
-  -- if r > (math.pi * 2) then
-  --   r = 0
-  -- else
-  --   r = r + 0.01
-  -- end
-
   love.graphics.draw(
     self.texture, self.currentFrame,
     -- x, y, rotation
-    self.x, self.y, r,
+    self.x, self.y, self.r,
     -- scale x, y
-    scaleX, 1,
+    1, 1,
     -- origin offset x, y
-    self.width / 2, self.height / 2
+    -- self.w * 0.5, self.h * 0.5
+    self.w * 0.5, self.h * 0.5
   )
 end
