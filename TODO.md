@@ -1,7 +1,7 @@
 [ ] Splash screen (? xtra)
-[ ] Music - life on mars?
-  [ ] full song in beep boop?
-  [ ] looping milkytracker homage
+[x] Music - life on mars?
+  [x] full song in beep boop?
+  [x] looping milkytracker homage
 [x] Game manager
 [x] Roadster controls (states)
   [x] Left
