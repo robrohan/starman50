@@ -31,6 +31,17 @@ function Game:init()
     ['lose'] = love.audio.newSource('assets/sounds/lose.wav', 'static'),
     ['explode1'] = love.audio.newSource('assets/sounds/explode1.wav', 'static'),
     ['explode2'] = love.audio.newSource('assets/sounds/explode2.wav', 'static'),
+    ['musk1'] = love.audio.newSource('assets/sounds/musk1.wav', 'static'),
+    ['musk2'] = love.audio.newSource('assets/sounds/musk2.wav', 'static'),
+    ['musk3'] = love.audio.newSource('assets/sounds/musk3.wav', 'static'),
+    ['musk4'] = love.audio.newSource('assets/sounds/musk4.wav', 'static'),
+    ['musk5'] = love.audio.newSource('assets/sounds/musk5.wav', 'static'),
+    ['musk6'] = love.audio.newSource('assets/sounds/musk6.wav', 'static'),
+    ['musk7'] = love.audio.newSource('assets/sounds/musk7.wav', 'static'),
+    ['musk8'] = love.audio.newSource('assets/sounds/musk8.wav', 'static'),
+    ['musk9'] = love.audio.newSource('assets/sounds/musk9.wav', 'static'),
+    ['musk10'] = love.audio.newSource('assets/sounds/musk10.wav', 'static'),
+    ['musk11'] = love.audio.newSource('assets/sounds/musk11.wav', 'static'),
   }
 
   SWARM = {}
@@ -112,6 +123,8 @@ function Game:init()
       if AI_SCORE >= LOSE_SCORE then
         self.state = 'dead'
         self.music['game']:stop()
+        local v = math.random(1,11)
+        self.sounds['musk'..v]:play()
       end
 
       if SCORE == 20 then
