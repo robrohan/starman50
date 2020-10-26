@@ -50,8 +50,6 @@ function love.draw()
   -- begin virtual resolution drawing
   Push:apply('start')
   Camera:set()
-  -- love.graphics.setFont(FONTS['mediumFont'])
-  -- love.graphics.print("Starman 2050", 1, 1)
   GAME:render()
   -- end virtual resolution
   Camera:unset()

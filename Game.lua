@@ -4,48 +4,99 @@ require 'Roadster'
 require 'Laser'
 require 'Enemy'
 
-MAX_ENEMY = 20
+MAX_ENEMY = 60
+
+SCORE = 0
+AI_SCORE = 0
+LOSE_SCORE = 9
+ATTACK_LEVEL = 5
+BEST = 0
 
 function Game:init()
   -- love.keyboard.keysPressed = {}
   -- love.keyboard.keysReleased = {}
 
   SWARM = {}
-  local o = 0
   for i = 1, MAX_ENEMY do
     SWARM[i] = Enemy()
-    SWARM[i].x = o
-    o = o + 18
   end
 
   self.state = 'in_play'
   self.states = {
     ['splash'] = function(dt)
+      -- TODO
+    end,
+    ['set_stage'] = function(dt)
+      PLAYER:reset()
+      for i = 1, MAX_ENEMY do
+        SWARM[i]:resetPosition()
+      end
+      SCORE = 0
+      AI_SCORE = 0
+      ATTACK_LEVEL = 5
+      self.state = 'in_play'
     end,
     ['in_play'] = function(dt)
       self.handleInput()
-      PLAYER:update(dt)
 
-      ------------------------------
-      -- if ENEMY.state == 'alive' and collides(ENEMY, LASER) then
-      --   ENEMY.state = 'die'
-      --   shk = Camera:shake(1000, 5)
-      -- end
-      -- if shk then
-      --   coroutine.resume(shk)
-      -- end
-      ------------------------------
-      for i = 1, MAX_ENEMY do
+      -- Enemy logic...
+      for i = 1, ATTACK_LEVEL do
         local e = SWARM[i]
-        if e.state == 'alive' and collides(LASER, e) then
-          e.state = 'die'
+
+        -- Check if we've killed an Enemy
+        if e.state == 'attack' then
+          -- see if the laser hit a bad guy
+          if collides(LASER, e) then
+            e.state = 'die'
+            e.y = e.y - 10
+            SCORE = SCORE + 1
+            -- tmp
+            shk = Camera:shake(100, 2)
+          end
+          -- see if the bad guy this the player
+          if collides(PLAYER, e) then
+            PLAYER.state = 'hit'
+            e.state = 'die'
+            shk = Camera:shake(150, 10)
+          end
         end
+
+        if e.state == 'alive' then
+          e.dy = math.min(0.1, math.random() / 10)
+          e.state = 'attack'
+        end
+
+        -- Update the Enemy
         SWARM[i]:update(dt)
       end
+      PLAYER:update(dt)
       LASER:update(dt)
 
+      -- run camera shake if it's set
+      if shk then
+        coroutine.resume(shk)
+      end
+
+      if AI_SCORE >= LOSE_SCORE then
+        self.state = 'dead'
+      end
+
+      if SCORE == 20 then
+        ATTACK_LEVEL = 10
+      elseif SCORE == 40 then
+        ATTACK_LEVEL = 15
+      elseif SCORE == 60 then
+        ATTACK_LEVEL = 20
+      elseif SCORE == 80 then
+        ATTACK_LEVEL = 30
+      elseif SCORE == 100 then
+        ATTACK_LEVEL = 40
+      elseif SCORE == 200 then
+        ATTACK_LEVEL = 60
+      end
     end,
     ['dead'] = function(dt)
+      PLAYER:update(dt)
     end,
     ['quit'] = function(dt)
     end
@@ -53,7 +104,6 @@ function Game:init()
 
   PLAYER = Roadster()
   LASER = Laser()
-  -- ENEMY = Enemy()
 end
 
 function Game:handleInput()
@@ -76,17 +126,6 @@ function Game:handleInput()
     LASER.y = PLAYER.y - 26
     LASER.state = 'fire'
   end
-
-  -------------------------------
-  -- if SHAKE == true then
-  --   -- create a coroutine
-  --   shk = Camera:shake(1000, 5)
-  -- end
-  -- if shk then
-  --   -- if it exists "play" it
-  --   coroutine.resume(shk)
-  -- end
-  -------------------------------
 end
 
 function Game:update(dt)
@@ -99,9 +138,48 @@ function Game:render()
   if self.state == 'in_play' then
     PLAYER:render()
     LASER:render()
-    -- ENEMY:render()
     for i = 1, MAX_ENEMY do
       SWARM[i]:render()
+    end
+
+    love.graphics.setFont(FONTS['mediumFont'])
+    love.graphics.print(SCORE, 4, 1)
+
+    love.graphics.setColor(0.5, 0.5, 0.5, 1.)
+    love.graphics.setFont(FONTS['mediumFont'])
+    love.graphics.print((ATTACK_LEVEL / 5),
+      VIRTUAL_WIDTH - 10,
+      1
+    )
+    love.graphics.print(BEST,
+      4,
+      VIRTUAL_HEIGHT - 16
+    )
+
+    love.graphics.setColor(1., 1., 1., 1.)
+    love.graphics.print(AI_SCORE,
+      VIRTUAL_WIDTH - 15,
+      VIRTUAL_HEIGHT - 16
+    )
+  elseif self.state == 'dead' then
+    PLAYER.state = 'die'
+    PLAYER:render()
+    love.graphics.setColor(1., 1., 1., 1.)
+    love.graphics.setFont(FONTS['mediumFont'])
+    love.graphics.printf("Failure.",100, 100, 200,"center")
+
+    if SCORE > BEST then
+      BEST = SCORE
+    end
+
+    if love.keyboard.isDown('return') then
+      self.state = 'set_stage'
+    end
+  elseif self.state == 'splash' then
+    love.graphics.setFont(FONTS['defaultFont'])
+    love.graphics.printf("Enter to start.",100, 200, 200,"center")
+    if love.keyboard.isDown('return') then
+      self.state = 'set_stage'
     end
   end
 end

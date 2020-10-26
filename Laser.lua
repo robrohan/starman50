@@ -1,8 +1,8 @@
 Laser = Class{}
 
 function Laser:init()
-  self.x = -4
-  self.y = -30
+  self.x = VIRTUAL_WIDTH + 4
+  self.y = VIRTUAL_HEIGHT + 30
   self.w = 4
   self.h = 30
 
@@ -16,12 +16,18 @@ function Laser:init()
   self.state = 'offscreen'
 end
 
+function Laser:resetPosition()
+  self.x = VIRTUAL_WIDTH + 4
+  self.y = VIRTUAL_HEIGHT + 30
+  self.state = 'offscreen'
+end
+
 function Laser:update(dt)
   if self.state == 'fire' and self.y > -self.h then
     self.y = self.y - 1
   end
   if self.y <= -self.h then
-    self.state = 'offscreen'
+    self:resetPosition()
   end
 end
 
