@@ -27,6 +27,13 @@ function Game:init()
     ['game'] = love.audio.newSource('assets/music/starman.wav', 'static')
   }
 
+  self.images = {
+    ['title'] = love.graphics.newImage('assets/graphics/title_screen.png'),
+    ['elon'] = love.graphics.newImage('assets/graphics/elon_screen.png'),
+    ['inst'] = love.graphics.newImage('assets/graphics/ins_screen.png'),
+    ['earth']= love.graphics.newImage('assets/graphics/earth.png')
+  }
+
   self.sounds = {
     ['laser1'] = love.audio.newSource('assets/sounds/laser1.wav', 'static'),
     ['laser2'] = love.audio.newSource('assets/sounds/laser2.wav', 'static'),
@@ -208,6 +215,11 @@ function Game:render()
   love.graphics.setShader()
 
   if self.state == 'in_play' then
+    -- Just keep moving the earth down for a bit of context
+    if TIME < 10 then
+      love.graphics.draw(self.images['earth'], -10, (75 * (TIME*TIME)/100) + 30, 0, 1, 1)
+    end
+
     PLAYER:render()
     LASER:render()
     for i = 1, MAX_ENEMY do
@@ -248,6 +260,13 @@ function Game:render()
       self.state = 'set_stage'
     end
   elseif self.state == 'splash' then
+    love.graphics.draw(self.images['title'], 0, 0, 0, 1, 1)
+
+    if TIME > 10 then
+      love.graphics.draw(self.images['elon'], 0, 0, 0, 1, 1)
+      love.graphics.draw(self.images['inst'], 0, 0, 0, 1, 1)
+    end
+
     love.graphics.setFont(FONTS['defaultFont'])
     love.graphics.printf("Enter to start.",100, 200, 200,"center")
     if love.keyboard.isDown('return') then
