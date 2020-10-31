@@ -111,7 +111,7 @@ function Game:init()
         -- Check if we've killed an Enemy
         if e.state == 'attack' then
           -- see if the laser hit a bad guy
-          if collides(LASER, e) then
+          if collides(e, LASER) then
             e.state = 'die'
             local v = math.random(1,2)
             self.sounds['explode'..v]:stop()
@@ -326,15 +326,15 @@ end
 
 -- sees if a overlaps with b
 function collides(a, b)
-  local a1x = a.x
-  local a1y = a.y
-  local a2x = a.x + a.w
-  local a2y = a.y + a.h
+  local a1x = a.x - (a.w * 0.5)
+  local a1y = a.y - (a.h * 0.5)
+  local a2x = a.x + (a.w * 0.5)
+  local a2y = a.y + (a.h * 0.5)
 
-  local b1x = b.x
-  local b1y = b.y
-  local b2x = b.x + b.w
-  local b2y = b.y + b.h
+  local b1x = b.x - (a.w * 0.5)
+  local b1y = b.y - (a.h * 0.5)
+  local b2x = b.x + (b.w * 0.5)
+  local b2y = b.y + (b.h * 0.5)
 
   local o = a1x > b2x or
             b1x > a2x or

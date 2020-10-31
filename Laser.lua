@@ -1,8 +1,8 @@
 Laser = Class{}
 
 function Laser:init()
-  self.x = VIRTUAL_WIDTH + 4
-  self.y = VIRTUAL_HEIGHT + 30
+  self.x = (VIRTUAL_WIDTH + 4) * 2
+  self.y = (VIRTUAL_HEIGHT + 30) * 2
   self.w = 4
   self.h = 30
 
@@ -17,8 +17,8 @@ function Laser:init()
 end
 
 function Laser:resetPosition()
-  self.x = VIRTUAL_WIDTH + 4
-  self.y = VIRTUAL_HEIGHT + 30
+  self.x = (VIRTUAL_WIDTH + self.w) * 2
+  self.y = (VIRTUAL_HEIGHT + self.h) * 2
   self.state = 'offscreen'
 end
 
