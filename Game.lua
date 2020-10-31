@@ -15,6 +15,8 @@ BEST = 0
 
 DEAD_TIME = 0
 
+GAME_TUNE = 'game1'
+
 function Game:init()
   -- love.keyboard.keysPressed = {}
   -- love.keyboard.keysReleased = {}
@@ -23,8 +25,11 @@ function Game:init()
   self.shader = love.graphics.newShader("background.glsl")
 
   self.music = {
-    ['splash'] = love.audio.newSource('assets/music/life_on_mars.wav', 'static'),
-    ['game'] = love.audio.newSource('assets/music/starman.wav', 'static')
+    ['splash'] = love.audio.newSource('assets/music/harmony.wav', 'static'),
+    ['game1'] = love.audio.newSource('assets/music/core_meltdown.wav', 'static'),
+    ['game2'] = love.audio.newSource('assets/music/positive_energy.wav', 'static'),
+    ['game3'] = love.audio.newSource('assets/music/unlisted.wav', 'static'),
+    ['game4'] = love.audio.newSource('assets/music/contact.wav', 'static')
   }
 
   self.images = {
@@ -53,6 +58,21 @@ function Game:init()
     ['musk11'] = love.audio.newSource('assets/sounds/musk11.wav', 'static'),
   }
 
+  self.credits = {
+    [1] = "Rob's CS50 Final Project",
+    [2] = "Music: Harmony by Andreas Viklund",
+    [3] = "Music: Core Meltdown by Andreas Viklund",
+    [4] = "Music: Unlisted by Andreas Viklund",
+    [5] = "Music: Contact by Andreas Viklund",
+    [6] = "Music: Positive Energy by Zilly Mike",
+    [7] = "Star Nest Shader by Pablo Roman Andrioli",
+    [8] = "Amazing Pixel Art by Rob",
+    [9] = "Concept / Programming by Rob",
+    [10] = "",
+    [11] = "No Roadster's where injured in the making this game",
+    [12] = "",
+  }
+
   SWARM = {}
   for i = 1, MAX_ENEMY do
     SWARM[i] = Enemy()
@@ -66,6 +86,7 @@ function Game:init()
       self.music['splash']:play()
     end,
     ['set_stage'] = function(dt)
+      GAME_TUNE = 'game'..math.random(1,4)
       self.music['splash']:stop()
       PLAYER:reset()
       for i = 1, MAX_ENEMY do
@@ -75,9 +96,10 @@ function Game:init()
       AI_SCORE = 0
       ATTACK_LEVEL = 5
       self.state = 'in_play'
-      self.music['game']:setLooping(true)
-      self.music['game']:play()
+      self.music[GAME_TUNE]:setLooping(true)
+      self.music[GAME_TUNE]:play()
       TIME = 0
+      CREDIT_IDX = 1
     end,
     ['in_play'] = function(dt)
       self:handleInput()
@@ -132,7 +154,7 @@ function Game:init()
 
       if AI_SCORE >= LOSE_SCORE then
         self.state = 'dead'
-        self.music['game']:stop()
+        self.music[GAME_TUNE]:stop()
         local v = math.random(1,11)
         self.sounds['musk'..v]:play()
         DEAD_TIME = 0
@@ -161,6 +183,8 @@ function Game:init()
       DEAD_TIME = DEAD_TIME + dt
       PLAYER:update(dt)
       if DEAD_TIME >= 20 then
+        TIME = 0
+        CREDIT_IDX = 1
         self.state = 'splash'
       end
     end,
@@ -195,7 +219,7 @@ function Game:handleInput()
     self.sounds['laser'..v]:stop()
     self.sounds['laser'..v]:setFilter {
       type = 'lowpass',
-      volume = 0.4,
+      volume = 0.5,
       highgain = 1.
     }
     self.sounds['laser'..v]:play()
@@ -206,6 +230,8 @@ function Game:update(dt)
   self.states[self.state](dt)
 end
 
+local credit = ''
+local CREDIT_IDX = 1
 function Game:render()
   -- love.graphics.clear(0.098, 0.129, 0.251, 1)
 
@@ -265,6 +291,17 @@ function Game:render()
     if TIME > 10 then
       love.graphics.draw(self.images['elon'], 0, 0, 0, 1, 1)
       love.graphics.draw(self.images['inst'], 0, 0, 0, 1, 1)
+
+      -- credit
+      if math.floor(TIME) % 5 == 0 then
+        CREDIT_IDX = math.floor(TIME) / 5 - 1
+        if CREDIT_IDX < 13 then
+          credit = self.credits[CREDIT_IDX]
+        end
+      end
+
+      love.graphics.setFont(FONTS['defaultFont'])
+      love.graphics.printf(credit, 0, 85, VIRTUAL_WIDTH, 'center')
     end
 
     love.graphics.setFont(FONTS['defaultFont'])

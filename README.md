@@ -9,7 +9,25 @@ For my final cs50 project, I am making a rather silly game with Lua and Love. Th
 
 ![Starman Screenshot](starman.png)
 
+
+## Credits
+
+* Music: [Core Meltdown by Andreas Viklund](https://modarchive.org/index.php?request=view_by_moduleid&query=134831) [Creative Commons](https://creativecommons.org/licenses/by/3.0/)
+
+* Music: [Positive Energy by Zilly Mike](https://modarchive.org/index.php?request=view_by_moduleid&query=56082) [Creative Commons](https://creativecommons.org/licenses/by/3.0/)
+
+* Music: [Unlisted by Andreas Viklund](https://modarchive.org/index.php?request=view_by_moduleid&query=59004) [Creative Commons](https://creativecommons.org/licenses/by/3.0/)
+
+* Music: [Harmony by Andreas Viklund](https://modarchive.org/index.php?request=view_by_moduleid&query=157256) [Creative Commons](https://creativecommons.org/licenses/by/3.0/)
+
+* Music: [Contact by Andreas Viklund](https://modarchive.org/index.php?request=view_by_moduleid&query=157241) [Creative Commons](https://creativecommons.org/licenses/by/3.0/)
+
+
+
+* Star Shader: [Star Nest by Pablo Roman Andrioli](https://www.shadertoy.com/view/XlfGRj) MIT License.
+
 ---
+
 
 ## Assets
 
