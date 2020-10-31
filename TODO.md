@@ -1,4 +1,4 @@
-[ ] Splash screen (? xtra)
+[x] Splash screen
 [x] Music - life on mars?
   [x] full song in beep boop?
   [x] looping milkytracker homage
